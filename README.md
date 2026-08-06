@@ -18,6 +18,8 @@ committeada — no en la memoria del agente, que está anclada al directorio.
 | `/feature <slug>` · `list` · `close <slug>` | Ciclo de vida de una feature: kickoff (worktree + branch + doc), estado de las activas, cierre con merge `--no-ff` y limpieza |
 | `/hotfix <slug>` · `close <slug>` | Bug de producción con ceremonia mínima: worktree propio, fix mínimo + test obligatorio, merge primero y deploy después, post-mortem al cerrar |
 | `/issue new` · `list` · `take <N>` | Backlog de GitHub → flujo: redacta issues bien formados, lista con ruta sugerida, toma uno y arranca `/feature` o `/hotfix` con `Closes #N` cableado (requiere `gh`) |
+| `/commit [scope]` | Crea un Conventional Commit en inglés (subject imperativo ≤ 72 chars, body con bullets), sin atribución de IA |
+| `/push [branch]` | Pushea los commits al branch indicado (o al actual), con `-u` si no hay upstream; nunca hace force-push |
 
 En un proyecto sin conflicto de nombres los comandos funcionan con el nombre
 corto (`/feature x`); el nombre canónico es `/agentic-workflow:feature`.

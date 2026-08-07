@@ -1,7 +1,7 @@
 ---
 name: init
-description: Inicializa el flujo agéntico (worktrees + sesiones de Claude) en un proyecto. Crea el contrato local docs/AGENTIC_WORKFLOW.md y la plantilla docs/features/TEMPLATE.md a partir de las respuestas del usuario. Correr una sola vez por proyecto, desde la raíz del repo.
-argument-hint: (sin argumentos)
+description: Inicializa el flujo agéntico (worktrees + sesiones de Claude) en un proyecto. Crea el contrato local docs/AGENTIC_WORKFLOW.md y la plantilla docs/features/TEMPLATE.md a partir de las respuestas del usuario. /init update migra un contrato existente a la versión vigente del template (agrega secciones nuevas sin pisar personalizaciones). Se corre desde la raíz del repo.
+argument-hint: (sin argumentos) | update
 ---
 
 # /init — inicializar el flujo agéntico en este proyecto
@@ -22,8 +22,9 @@ directorio base de esta skill).
      con el cwd). Si no es repo, detente y ofrece `git init` primero.
    - No estás dentro de un worktree secundario (`git rev-parse --git-common-dir`
      debe ser `.git`).
-   - Si `docs/AGENTIC_WORKFLOW.md` ya existe, detente: el proyecto ya está
-     inicializado. Ofrece revisarlo/actualizarlo en vez de sobreescribir.
+   - Si `docs/AGENTIC_WORKFLOW.md` ya existe, NO sobreescribas: el proyecto ya
+     está inicializado. Ofrece `/init update` (ver abajo) para migrarlo a la
+     versión vigente del template, o revisarlo a mano.
 
 2. **Detecta el branch principal:** `git symbolic-ref --short refs/remotes/origin/HEAD`
    (quita el prefijo `origin/`). Si no hay remote, usa el branch actual.
@@ -64,6 +65,51 @@ directorio base de esta skill).
    feature, y recuerda las dos reglas que más cuesta internalizar: merges solo
    desde la sala de control, y la memoria entre sesiones vive en
    `docs/features/<slug>.md`.
+
+## `/init update` — migrar el contrato a la versión vigente
+
+Actualiza un `docs/AGENTIC_WORKFLOW.md` creado con una versión anterior del
+template, **sin pisar las personalizaciones del proyecto**. El mecanismo:
+
+1. **Determina las dos versiones:**
+   - La del template: comentario `<!-- contrato agentic-workflow vN ... -->`
+     en `templates/AGENTIC_WORKFLOW.template.md`.
+   - La del contrato local: mismo comentario en `docs/AGENTIC_WORKFLOW.md`.
+     **Si no existe el comentario, el contrato es v1.**
+   - Si ya están iguales: dilo y termina (no hay nada que migrar).
+   - Si el contrato local NO nació de esta plantilla (estructura ajena,
+     escrito a mano): no lo toques — muestra qué secciones del template le
+     faltarían y deja que el usuario decida a mano.
+
+2. **Lee `templates/CONTRACT_CHANGELOG.md`** y recorre las versiones desde la
+   del contrato + 1 hasta la del template, acumulando:
+   - Secciones **agregadas** → se copian tal cual desde el template, en la
+     posición que indica el changelog. Si el proyecto ya tiene una sección
+     con ese mismo título (la agregó a mano), no la dupliques ni la pises:
+     repórtala como "ya presente, revisar diferencias a mano".
+   - Secciones **cambiadas** → nunca se reemplazan en silencio: muestra la
+     versión nueva junto a la local y pregunta con AskUserQuestion
+     (reemplazar / conservar la local / decidir después).
+
+3. **Aplica los cambios** en `docs/AGENTIC_WORKFLOW.md` y actualiza (o
+   inserta, si era v1) el comentario de versión a la del template.
+
+4. **Muestra el diff completo** (`git diff docs/AGENTIC_WORKFLOW.md`) y
+   commitea con `docs: update agentic workflow contract to vN` — pide
+   confirmación antes del commit.
+
+5. Si el template de features (`docs/features/TEMPLATE.md`) también cambió en
+   alguna versión del changelog, aplica el mismo criterio (agregar sin pisar).
+
+Notas del modo update:
+
+- Es **aditivo por diseño**: la fuente de verdad de lo local sigue siendo el
+  proyecto. El changelog del contrato debe mantenerse **append-only** y cada
+  versión nueva del template debe registrar ahí qué agrega/cambia — sin esa
+  entrada, `/init update` no sabe migrar.
+- Tras actualizar el plugin (`/plugin update` o pull del marketplace), correr
+  `/init update` en cada proyecto es el paso que propaga el contrato. La skill
+  puede sugerirlo, no automatizarlo: el contrato es del proyecto.
 
 ## Notas
 

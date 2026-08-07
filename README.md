@@ -14,7 +14,7 @@ committeada — no en la memoria del agente, que está anclada al directorio.
 
 | Comando | Qué hace |
 |---|---|
-| `/init` | Inicializa el flujo en un proyecto: crea el contrato local `docs/AGENTIC_WORKFLOW.md` y `docs/features/TEMPLATE.md` preguntando lo mínimo (entorno, tests, deploy) |
+| `/init` · `update` | Inicializa el flujo en un proyecto (contrato local `docs/AGENTIC_WORKFLOW.md` + `docs/features/TEMPLATE.md`, preguntando lo mínimo); `update` migra un contrato existente a la versión vigente del template — agrega las secciones nuevas sin pisar personalizaciones (versionado en `templates/CONTRACT_CHANGELOG.md`) |
 | `/feature <slug>` · `list` · `close <slug>` | Ciclo de vida de una feature: kickoff (worktree + branch + doc), estado de las activas, cierre con merge `--no-ff` y limpieza |
 | `/hotfix <slug>` · `close <slug>` | Bug de producción con ceremonia mínima: worktree propio, fix mínimo + test obligatorio, merge primero y deploy después, post-mortem al cerrar |
 | `/issue new` · `list` · `take <N>` | Backlog de GitHub → flujo: redacta issues bien formados, lista con ruta sugerida, toma uno y arranca `/feature` o `/hotfix` con `Closes #N` cableado (requiere `gh`) |

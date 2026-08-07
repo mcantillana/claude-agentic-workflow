@@ -1,9 +1,14 @@
 # Flujo de trabajo agéntico: worktrees + sesiones
 
+<!-- contrato agentic-workflow v2 — NO borrar esta línea: /init update la usa
+     para saber qué secciones nuevas faltan en este proyecto -->
+
 > Este archivo es el **contrato local** del flujo agéntico en este proyecto.
 > Lo crean y lo leen las skills del plugin `agentic-workflow` (`/feature`,
 > `/hotfix`, `/issue`). Ajusta las secciones marcadas a la realidad del
-> proyecto; las skills obedecen lo que diga aquí.
+> proyecto; las skills obedecen lo que diga aquí. Cuando el plugin traiga una
+> versión de contrato más nueva, `/init update` agrega lo que falte sin tocar
+> tus personalizaciones.
 
 ## El modelo
 

@@ -60,6 +60,18 @@ corto**: si un repo ya tiene su propia skill `feature`, `/feature` sigue
 ejecutando la local y la del plugin solo responde con prefijo. Instalar este
 plugin no altera flujos existentes.
 
+## Barriers
+
+No todo trabajo calza en `1 feature = 1 worktree`. Un **barrier** es un issue
+que vive fuera del repo (DNS, proxies, servicios externos), reescribe el
+terreno de los demás (reorganizaciones estructurales), no se puede
+mergear/deployar atómicamente, o es un spike sin alcance cerrado. Para esos,
+`/issue take` **no crea worktree**: redirige al camino de barriers — sesión de
+planificación que produce un runbook en `docs/plans/<slug>.md`, descomposición
+en fases normales deployadas *en oscuro*, y un flip final desde la sala de
+control con cero worktrees activos. La definición completa queda en el
+contrato local que crea `/init` (`docs/AGENTIC_WORKFLOW.md`).
+
 ## Roadmap
 
 - `/issue plan` y `/issue dispatch` (scoping paralelo y kickoff en lote)

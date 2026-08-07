@@ -64,6 +64,46 @@ sesión siguen estas instrucciones:
 5. **Cierre** — sala de control: `/feature close <slug>`. Merge `--no-ff`,
    limpieza de worktree/branch/entorno. El doc queda como registro.
 
+## Barriers (trabajos que NO se toman como feature normal)
+
+Un **barrier** es un trabajo al que el modelo `1 feature = 1 worktree = 1
+branch` le queda chico. Señales (basta una):
+
+- **El trabajo no vive (solo) en el repo**: DNS, proxies/vhosts del host,
+  config de servicios externos, datos de producción. Un worktree capturaría
+  una fracción del cambio.
+- **Reescribe el terreno de los demás**: reorganización estructural que mueve
+  rutas/archivos de todo el repo — cualquier feature paralela muere en
+  conflictos.
+- **No se mergea/deploya atómicamente**: necesita ventana de transición,
+  verificación por etapas y rollback por paso (upgrades de plataforma o BD,
+  migraciones de datos en caliente).
+- **Spike sin alcance cerrado**: primero investigar, después decidir qué
+  construir.
+
+Regla dura: **`/issue take` no crea worktree para un barrier**; si el usuario
+insiste, es una decisión explícita.
+
+Cómo se ejecuta (3 fases):
+
+1. **Planificar antes de tocar nada.** Sesión dedicada (plan mode) cuyo
+   entregable es un **runbook committeado** en `docs/plans/<slug>.md`:
+   secuencia de pasos a nivel de comandos, verificación tras cada paso,
+   criterio seguir/abortar y rollback por etapa. El issue define el *qué*;
+   el runbook baja al *cómo*.
+2. **Descomponer en fases donde cada una SÍ sea normal.**
+   - *Fases de repo* → worktrees chicos vía `/feature`, mergeados y
+     deployados **en oscuro** (el código llega a producción sin cambiar nada
+     visible hasta el flip).
+   - *Fases de infra* → operaciones de la sala de control, como un deploy:
+     paso a paso contra el runbook, verificando entre pasos.
+   - *El flip* → sala de control, en ventana elegida, con el rollback a mano.
+3. **Congelar la mesa.** El flip se ejecuta con **cero worktrees activos**:
+   nada mergeando en paralelo mientras la infra está a medio camino.
+
+El runbook en `docs/plans/` es el documento vivo del barrier (checklist con
+estado real); al terminar, el resultado se registra como en un deploy grande.
+
 ## Notas del proyecto
 
 {{PROJECT_NOTES}}

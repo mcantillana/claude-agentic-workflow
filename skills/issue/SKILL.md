@@ -29,6 +29,17 @@ obligatorio, deploy urgente). Un bug menor no la necesita.
 | `bug` + urgente / afecta prod  | `/hotfix`        | Confirmar urgencia antes     |
 | `bug` no urgente               | `/feature`       | Branch normal, sin ceremonia |
 | sin etiqueta / mixta / dudosa  | —                | Preguntar al usuario         |
+| **barrier** (por señales, no etiqueta) | camino de barriers | NO crear worktree (ver abajo) |
+
+**Detección de barriers.** Independiente de la etiqueta, un issue es *barrier*
+si al leerlo aparece una de estas señales: el trabajo no vive (solo) en el repo
+(DNS, proxies, config de servicios externos, datos de prod); reescribe rutas o
+archivos de todo el repo (mata el paralelismo de worktrees); no se puede
+mergear/deployar atómicamente (ventana de transición, rollback por etapa); o es
+un spike sin alcance cerrado. La definición completa y el camino de ejecución
+en 3 fases (runbook en `docs/plans/` → fases normales deployadas en oscuro →
+flip con la mesa congelada) están en la sección **Barriers** de
+`docs/AGENTIC_WORKFLOW.md` — el contrato local manda.
 
 ## `/issue new <descripción>` — redactar y crear
 
@@ -53,7 +64,8 @@ pueda usar para sembrar el doc de la feature. NO crea worktree ni branch.
 
 1. `gh issue list --state open --json number,title,labels,assignees,url`
 2. Deriva la ruta sugerida según el mapa (marca los `bug` como "hotfix? —
-   confirmar urgencia" y los sin etiqueta como "preguntar").
+   confirmar urgencia", los sin etiqueta como "preguntar", y los que por
+   título/cuerpo huelan a barrier como "⚠️ barrier — no como feature normal").
 3. Tabla: `#` | título | etiqueta(s) | asignado | ruta sugerida. Recuerda que
    se toma uno con `/issue take <N>`.
 
@@ -65,7 +77,10 @@ pueda usar para sembrar el doc de la feature. NO crea worktree ni branch.
    ```
    Si está cerrado, detente. Si tiene otro asignado, adviértelo y pregunta.
 2. **Decide la ruta** según el mapa (con confirmación en los casos que la
-   piden).
+   piden). **Si el issue es un barrier** (ver Detección de barriers): NO crees
+   worktree — explica por qué y ofrece el camino de barriers (sesión de
+   planificación → runbook en `docs/plans/<slug>.md`). Solo si el usuario
+   insiste explícitamente se sigue por `/feature`, dejando constancia.
 3. **Propón un slug** kebab-case corto derivado del título y confírmalo.
 4. **Asigna el issue:** `gh issue edit <N> --add-assignee @me`.
 5. **Arranca la skill destino** (`feature` o `hotfix` de este plugin) con el

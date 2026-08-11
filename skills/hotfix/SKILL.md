@@ -104,5 +104,14 @@ usuario dio una descripción, propón slug y confirma.
    persistente del agente y, si el proyecto tiene `docs/postmortems/` (o el
    contrato indica otro lugar), también como archivo committeado.
 
-6. Confirma al usuario: mergeado, worktree y branch eliminados, deploy
-   pendiente/hecho y verificado, post-mortem guardado.
+6. **Tarea de ClickUp + aviso al DL** (si el contrato tiene ClickUp y el hotfix
+   nació de un issue): ubica la tarea vinculada (comentario `ClickUp: <url>` del
+   issue, o el custom field = #N), pásala con `clickup_update_task` al estado de
+   cierre (`DEPLOY A PRODUCCION` mientras se despliega; `COMPLETADAS` una vez
+   verificado en prod) y `clickup_create_comment` mencionando al DL con el SHA
+   del merge y el estado. Si el MCP no está, deja anotado el movimiento
+   pendiente.
+
+7. Confirma al usuario: mergeado, worktree y branch eliminados, deploy
+   pendiente/hecho y verificado, tarea de ClickUp movida + DL avisado,
+   post-mortem guardado.

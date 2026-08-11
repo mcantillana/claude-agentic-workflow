@@ -115,9 +115,20 @@ descripción, propón un slug y confirma.
    Si el worktree tiene cambios sin commitear, `git worktree remove` fallará:
    repórtalo y NO uses `--force` sin confirmación explícita.
 
-4. **Apaga el entorno del worktree** según el contrato (si aplica) y confirma
-   al usuario: mergeado, worktree y branch eliminados, entorno apagado, doc
-   en `MAIN` como registro.
+4. **Cierra la tarea de ClickUp y avisa al DL** (si el contrato tiene ClickUp y
+   la feature nació de un issue — el doc lo anota como "Origen: issue #N"):
+   - Ubica la tarea vinculada (comentario `ClickUp: <url>` del issue #N, o el
+     custom field = #N).
+   - `clickup_update_task` al **estado de cierre** del mapa: `DEPLOY A
+     PRODUCCION` si el deploy es manual (queda esperando deploy), o
+     `COMPLETADAS` si es auto-deploy desde `MAIN`.
+   - `clickup_create_comment` mencionando al **DL** (handle del contrato) con:
+     feature mergeada, SHA del merge y estado nuevo. Ese comentario es el aviso.
+   - Si el MCP no está: dilo y deja anotado el movimiento pendiente.
+
+5. **Apaga el entorno del worktree** según el contrato (si aplica) y confirma
+   al usuario: mergeado, worktree y branch eliminados, entorno apagado, tarea de
+   ClickUp movida + DL avisado, doc en `MAIN` como registro.
 
 ## Reglas duras (recordatorio)
 

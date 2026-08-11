@@ -14,6 +14,18 @@ Reglas del changelog:
   `<!-- contrato agentic-workflow vN ... -->` bajo el H1.
 - Un contrato **sin** comentario de versión se trata como **v1**.
 
+## v3 (2026-08-11)
+
+- **Agrega** la sección `## Roles: DL (Delivery Lead) y DEV` — tabla de roles,
+  la regla de que el DEV cierra de punta a punta, y el layout multi-repo (una
+  carpeta por cliente). Posición: después de `## El modelo`, antes de
+  `## Reglas duras`.
+- **Agrega** la sección `## ClickUp (tareas)` — integración opcional con
+  ClickUp: bloque de config (`{{CLICKUP_CONFIG}}`) con folder/list/custom
+  field/handle del DL y mapa de estados (crear → tomar → cerrar). Posición:
+  después de `## Deploy (usado por /hotfix close)`, antes de `## Ciclo de vida`.
+  En proyectos sin ClickUp la sección dice `No aplica`.
+
 ## v2 (2026-08-06)
 
 - **Agrega** la sección `## Barriers (trabajos que NO se toman como feature

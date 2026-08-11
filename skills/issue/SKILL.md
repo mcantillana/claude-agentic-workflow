@@ -10,12 +10,29 @@ Orquestador delgado sobre `/feature` y `/hotfix` (las skills de este plugin):
 NO reemplaza su lógica — lee el issue, decide la ruta y arranca la skill
 correcta con el slug y el contexto ya resueltos.
 
+## Roles
+
+`/issue new` es el paso del **DL** (refina y crea la tarea); `/issue take` es
+el paso del **DEV** (la toma y arranca a desarrollar). Ver la sección
+`## Roles: DL y DEV` del contrato.
+
 ## Precondición (todos los subcomandos)
 
 - Sala de control: raíz del repo principal, branch principal (según
   `docs/AGENTIC_WORKFLOW.md`; si no existe, indica correr `/init`).
 - `gh auth status` OK y el repo tiene remote en GitHub. Si no, detente y
   dilo (el resto del plugin funciona sin `gh`; esta skill no).
+
+## ClickUp (si el contrato lo tiene)
+
+Lee la sección `## ClickUp (tareas)` del contrato. Si dice `No aplica`, omite
+todos los pasos de ClickUp de esta skill y trabaja solo con GitHub. Si tiene
+config (folder/list/custom field/handle del DL/mapa de estados), sincroniza
+según se indica en cada subcomando, usando las tools del MCP de ClickUp
+(`clickup_create_task`, `clickup_update_task`, `clickup_create_comment`,
+`clickup_search`/`clickup_filter_tasks`). **Degradá con gracia:** si el MCP no
+está conectado, seguí el flujo de GitHub, avisá que la parte de ClickUp quedó
+pendiente y anotá qué faltó hacer a mano.
 
 ## Mapa de ruteo (etiqueta del issue → skill)
 
@@ -57,8 +74,20 @@ pueda usar para sembrar el doc de la feature. NO crea worktree ni branch.
    al repo).
 5. Crea: `gh issue create --title "..." --label <etiqueta> --body "..."` y
    reporta número y URL.
-6. Ofrece el siguiente paso, no lo asumas: `/issue take <N>` ahora, o dejarlo
-   en el backlog.
+6. **Crea la tarea de ClickUp** (si el contrato tiene ClickUp). Es el cableado
+   que hace del DL el dueño de la creación:
+   - `clickup_create_task` en la **List ID** del contrato, con el título del
+     issue, una descripción corta (objetivo + link al issue) y **status =
+     estado de creación** del mapa (`PRIORIZADAS` por defecto).
+   - Setea el **custom field** del contrato (link al issue) con el número/URL
+     del issue.
+   - Comenta en el issue de GitHub la URL de la tarea de ClickUp
+     (`gh issue comment <N> --body "ClickUp: <url>"`), para que `/issue take` y
+     los `close` reencuentren la tarea leyendo el issue.
+   - Reporta el ID/URL de la tarea creada. Si el MCP no está: dilo y deja anotado
+     "crear tarea de ClickUp a mano en <list>, status PRIORIZADAS, campo link = #N".
+7. Ofrece el siguiente paso, no lo asumas: pasar la tarea a un DEV (queda en
+   `PRIORIZADAS`, lista para `/issue take <N>`), o dejarla en el backlog.
 
 ## `/issue list` — abiertos con ruta sugerida
 
@@ -83,6 +112,12 @@ pueda usar para sembrar el doc de la feature. NO crea worktree ni branch.
    insiste explícitamente se sigue por `/feature`, dejando constancia.
 3. **Propón un slug** kebab-case corto derivado del título y confírmalo.
 4. **Asigna el issue:** `gh issue edit <N> --add-assignee @me`.
+4b. **Mueve la tarea de ClickUp** (si el contrato tiene ClickUp): ubica la tarea
+   vinculada — leé el comentario `ClickUp: <url>` del issue, o buscala por el
+   custom field = #N (`clickup_search`/`clickup_filter_tasks`). Con
+   `clickup_update_task` pásala al **estado de "tomada"** del mapa (`EN PROGRESO`
+   por defecto) y asignala al DEV (`clickup_resolve_assignees` / el member que
+   corre esto). Si el MCP no está o no encontrás la tarea: avisá y seguí.
 5. **Arranca la skill destino** (`feature` o `hotfix` de este plugin) con el
    slug confirmado, pasándole como contexto el objetivo del issue para que el
    doc de la feature (o la descripción del hotfix) lo refleje.

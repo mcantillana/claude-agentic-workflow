@@ -44,7 +44,25 @@ directorio base de esta skill).
      `.gitignore`.
    - **Tests:** comando para correr la suite (o "no hay").
    - **Deploy:** cómo se despliega a producción, si aplica (lo usa
-     `/hotfix close` para recordar el paso; puede ser "n/a").
+     `/hotfix close` para recordar el paso; puede ser "n/a"). Recuérdalo: el
+     tipo de deploy define el estado de cierre en ClickUp (ver abajo).
+
+3b. **ClickUp (opcional).** Pregunta si este proyecto rastrea tareas en ClickUp.
+   - Si **no**: el bloque `{{CLICKUP_CONFIG}}` se resuelve con la única línea
+     `No aplica`. Salta el resto de este paso.
+   - Si **sí**, reúne los IDs. Si el MCP de ClickUp está conectado, **ayúdate de
+     él en vez de pedir IDs a ciegas**: `clickup_get_workspace_hierarchy` para
+     que el usuario elija folder y list por nombre, y `clickup_get_custom_fields`
+     (sobre la list elegida) para ubicar el campo que guardará el link al issue.
+     Si el MCP no está disponible, pide los IDs a mano. Reúne:
+     - **Folder ID** y **List ID** donde viven las tareas.
+     - **Custom field ID** del campo que guarda el nº/URL del issue de GitHub.
+     - **Handle del DL** a quién avisar al cerrar (ej. `@nico`), o su member ID.
+     - **Nombres exactos de los estados** del flujo (deben coincidir letra por
+       letra con los de la lista). Defaults PropulTech: crear → `PRIORIZADAS`,
+       tomar → `EN PROGRESO`, cerrar → `DEPLOY A PRODUCCION` (deploy manual) o
+       `COMPLETADAS` (auto-deploy desde `MAIN`). Elige el de cierre según el
+       deploy declarado arriba y confírmalo.
 
 4. **Crea los archivos:**
    - Copia `templates/AGENTIC_WORKFLOW.template.md` a `docs/AGENTIC_WORKFLOW.md`
@@ -54,17 +72,53 @@ directorio base de esta skill).
      `{{ENV_INSTRUCTIONS}}`, `{{TEST_INSTRUCTIONS}}`, `{{DEPLOY_INSTRUCTIONS}}`,
      `{{PROJECT_NOTES}}` (lo que el usuario quiera dejar anotado; si nada,
      "—"). No dejes ningún `{{...}}` sin resolver.
+   - Resuelve `{{CLICKUP_CONFIG}}`: si el proyecto no usa ClickUp, la única
+     línea `No aplica`. Si lo usa, este bloque exacto (las skills lo leen por
+     estos títulos de fila — no cambies los nombres de campo):
+
+         | Ajuste | Valor |
+         |---|---|
+         | Folder ID | <id> |
+         | List ID (donde viven las tareas) | <id> |
+         | Custom field ID (link al issue de GitHub) | <id> |
+         | Handle del DL (a quién avisar) | @<handle> |
+
+         **Mapa de estados** (nombres exactos, deben coincidir con la lista):
+
+         | Transición del flujo | Estado ClickUp |
+         |---|---|
+         | `/issue new` crea la tarea | PRIORIZADAS |
+         | `/issue take` (DEV la toma) | EN PROGRESO |
+         | `close` tras el merge | DEPLOY A PRODUCCION |
+
+     Reemplaza `<id>`/`<handle>` por lo reunido en 3b y el estado de cierre por
+     el elegido según el deploy (`DEPLOY A PRODUCCION` si es manual;
+     `COMPLETADAS` si es auto-deploy desde `MAIN`). Debajo de la tabla de
+     estados deja también esta guía de uso, tal cual:
+
+         - Estado de cierre: manual → `DEPLOY A PRODUCCION` (el paso a
+           `COMPLETADAS` queda manual tras verificar prod); auto-deploy → cierra
+           en `COMPLETADAS`.
+         - Estados fuera del flujo automático (`TO DO`, `PRIORIZADAS` como cola,
+           `EN ESPERA / DEMORADO`, `CERRADAS`) los maneja el DL a mano.
+         - Vínculo issue ↔ tarea: `/issue new` guarda el nº/URL del issue en el
+           custom field y comenta la URL de la tarea en el issue; `/issue take` y
+           los `close` reencuentran la tarea leyendo el issue.
    - Copia `templates/feature-TEMPLATE.md` a `docs/features/TEMPLATE.md` tal
      cual (crea el directorio `docs/features/`).
 
 5. **Muestra el resumen** (branch principal, directorio de worktrees, entorno,
-   archivos a copiar) y **commitea** los dos archivos con mensaje
-   `docs: init agentic workflow` — pide confirmación antes del commit.
+   ClickUp si aplica, archivos a copiar) y **commitea** los dos archivos con
+   mensaje `docs: init agentic workflow` — pide confirmación antes del commit.
 
-6. **Cierra indicando el siguiente paso:** `/feature <slug>` para la primera
-   feature, y recuerda las dos reglas que más cuesta internalizar: merges solo
-   desde la sala de control, y la memoria entre sesiones vive en
-   `docs/features/<slug>.md`.
+6. **Cierra indicando el siguiente paso según el rol:**
+   - **DL:** `/issue new <descripción>` para refinar y crear la primera
+     tarea (issue de GitHub + tarea de ClickUp linkeadas).
+   - **DEV:** `/issue take <N>` para tomar una tarea priorizada, o
+     `/feature <slug>` para arrancar sin issue.
+   - Recuerda las reglas que más cuesta internalizar: la memoria entre sesiones
+     vive en `docs/features/<slug>.md`, y el review lo hace una sesión que no es
+     la autora (aquí, el code review antes del cierre).
 
 ## `/init update` — migrar el contrato a la versión vigente
 

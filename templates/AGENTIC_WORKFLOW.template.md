@@ -1,6 +1,6 @@
 # Flujo de trabajo agéntico: worktrees + sesiones
 
-<!-- contrato agentic-workflow v2 — NO borrar esta línea: /init update la usa
+<!-- contrato agentic-workflow v3 — NO borrar esta línea: /init update la usa
      para saber qué secciones nuevas faltan en este proyecto -->
 
 > Este archivo es el **contrato local** del flujo agéntico en este proyecto.
@@ -22,6 +22,30 @@
 - Branch principal: `{{MAIN_BRANCH}}`
 - Directorio de worktrees: `{{WORKTREES_DIR}}/`
 - Convención de branches: `feature/<slug>` y `hotfix/<slug>`
+
+## Roles: DL (Delivery Lead) y DEV
+
+Este flujo se opera entre dos roles. Un mismo repo los cruza; la diferencia es
+qué skill corre cada uno y en qué estado deja la tarea.
+
+| Rol | Herramientas | Hace |
+|---|---|---|
+| **DL** (Delivery Lead) | Claude Desktop → Claude Code, con todos los repos del cliente clonados | Refina la tarea, `/issue new` (crea el issue de GitHub + la tarea de ClickUp linkeadas), prioriza |
+| **DEV** | Claude Code en el repo | `/issue take` → desarrolla en su worktree → `/commit` + `/push` → code review → `/feature close` (mergea, cierra el issue, mueve la tarea en ClickUp y avisa al DL) |
+
+En este flujo **el DEV cierra de punta a punta** (mergea desde su propia sala de
+control): la regla 5 de abajo ("review por sesión ajena") se cumple con el code
+review antes del cierre, no con un merge hecho por otra persona.
+
+**Layout multi-repo (una carpeta por cliente).** El DL mantiene una carpeta por
+cliente y, dentro, todos los repos de ese cliente clonados:
+
+    ~/<cliente>/
+      <repo-a>/   ← /init acá
+      <repo-b>/   ← /init acá
+
+Cada repo se inicializa con `/init` por separado. Si varios repos del mismo
+cliente comparten tablero de ClickUp, apuntan a la misma folder/list.
 
 ## Reglas duras
 
@@ -57,6 +81,20 @@ sesión siguen estas instrucciones:
 ## Deploy (usado por /hotfix close)
 
 {{DEPLOY_INSTRUCTIONS}}
+
+## ClickUp (tareas)
+
+Integración **opcional**. Si este proyecto rastrea tareas en ClickUp, las skills
+`/issue`, `/feature` y `/hotfix` sincronizan estado y avisos usando las tools
+del MCP de ClickUp (`clickup_create_task`, `clickup_update_task`,
+`clickup_create_comment`, etc.) — se referencian por su nombre, sin importar el
+ID del server. Si el MCP no está conectado, las skills **degradan con gracia**:
+siguen el flujo de GitHub y avisan que la parte de ClickUp quedó pendiente.
+
+Si el proyecto **no** usa ClickUp, esta sección dice `No aplica` y las skills la
+omiten por completo.
+
+{{CLICKUP_CONFIG}}
 
 ## Ciclo de vida
 

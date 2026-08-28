@@ -183,49 +183,24 @@ Con el plan guardado, ofrecé la elección; no la asumas:
 > Plan guardado en `PLANS_DIR/<slug>.md`, con N tareas. Dos formas de
 > ejecutarlo:
 >
-> **1. Por subagentes (recomendado si las tareas son independientes)** — un
-> subagente fresco por tarea, revisión entre tareas, iteración rápida.
+> **1. `/execute` (recomendado si las tareas son independientes)** — un
+> subagente fresco por tarea, review de spec y calidad después de cada una,
+> review amplio del branch al final, y un ledger que sobrevive a la
+> compactación.
 >
-> **2. En esta sesión** — ejecuto las tareas acá, con checkpoints para que
-> revises.
+> **2. En esta sesión** — ejecuto las tareas acá, tarea por tarea, marcando
+> los `- [ ]` y con checkpoint al final de cada una para que revises.
 >
 > ¿Cuál?
 
-### Si elige subagentes
+Si elige la 1, corré `/execute`. Si elige la 2, ejecutá acá.
 
-Un subagente por tarea, y **le construís el contexto a mano**: nunca hereda
-el historial de esta sesión. Le pasás la tarea completa del plan (archivos,
-interfaces, pasos), el objetivo del doc de la feature y las restricciones
-globales — nada más. Así se mantiene enfocado y vos conservás tu contexto
-para coordinar.
-
-Después de cada tarea, un subagente **revisor distinto del que implementó**
-verifica dos cosas: que cumpla lo que la tarea pedía, y la calidad del
-código. Al terminar todas, una revisión final sobre el branch completo.
-
-Esto es la regla dura del contrato — *el review lo hace una sesión que no es
-la autora* — aplicada dentro del worktree.
-
-**Ejecutá de corrido: no pares a preguntar "¿sigo?" entre tareas.** Ante un
-conflicto, una ambigüedad o un defecto del plan, **decidí** y anotá la
-decisión en la bitácora del doc de la feature (`Decisión: <qué> — <por qué> —
-<qué cuesta si me equivoco>`). Solo cuatro cosas te detienen: una operación
-destructiva o irreversible, algo sensible en seguridad, un efecto fuera de
-este worktree (un merge, un push a branch compartido, un deploy), y un plan
-tan roto que todo camino es adivinanza.
-
-### Si elige esta sesión
-
-Tarea por tarea, marcando los `- [ ]` a medida que pasan, con checkpoint al
-final de cada tarea para que el usuario revise.
-
-### En cualquiera de las dos
-
-Si el plan resulta estar mal a mitad de camino, corregí el plan y commiteá la
-corrección — es un documento vivo, no un contrato con vos mismo.
+**En cualquiera de las dos:** si el plan resulta estar mal a mitad de camino,
+corregí el plan y commiteá la corrección — es un documento vivo, no un
+contrato con vos mismo.
 
 ## Reglas duras
 
 Solo en el worktree · nunca en `MAIN` · sin placeholders · una tarea = un
-ciclo de test · si la ruta es `bounded`, no hay plan · quien revisa no es
-quien implementó.
+ciclo de test · si la ruta es `bounded`, no hay plan · el plan se escribe
+antes de codear, no después.

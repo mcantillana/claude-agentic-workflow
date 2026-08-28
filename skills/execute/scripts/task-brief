@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Extrae el texto completo de UNA tarea del plan a un archivo que el
+# implementador lee de una sola vez, para que el texto de la tarea nunca
+# tenga que pasar por el contexto del controlador.
+#
+# Reconoce encabezados `### Tarea N:` (los que escribe /plan) y `### Task N:`
+# (planes en inglés o venidos de superpowers).
+#
+# Uso: task-brief PLAN_FILE NUMERO_DE_TAREA [OUTFILE]
+# OUTFILE por defecto: <workspace>/tarea-<N>-brief.md
+set -euo pipefail
+
+if [ $# -lt 2 ] || [ $# -gt 3 ]; then
+  echo "uso: task-brief PLAN_FILE NUMERO_DE_TAREA [OUTFILE]" >&2
+  exit 2
+fi
+
+plan=$1
+n=$2
+[ -f "$plan" ] || { echo "no existe el plan: $plan" >&2; exit 2; }
+case "$n" in ''|*[!0-9]*) echo "numero de tarea invalido: $n" >&2; exit 2;; esac
+
+if [ $# -eq 3 ]; then
+  out=$3
+else
+  dir=$("$(cd "$(dirname "$0")" && pwd)/workspace" "$plan")
+  out="$dir/tarea-${n}-brief.md"
+fi
+
+awk -v n="$n" '
+  /^```/ { infence = !infence }
+  !infence && /^#+[ \t]+(Tarea|Task)[ \t]+[0-9]+/ {
+    intask = ($0 ~ ("^#+[ \t]+(Tarea|Task)[ \t]+" n "([^0-9]|$)"))
+  }
+  intask { print }
+' "$plan" > "$out"
+
+if [ ! -s "$out" ]; then
+  echo "tarea ${n} no encontrada en ${plan} (ningun encabezado 'Tarea ${n}')" >&2
+  exit 3
+fi
+
+echo "escrito ${out}: $(wc -l < "$out" | tr -d ' ') lineas"

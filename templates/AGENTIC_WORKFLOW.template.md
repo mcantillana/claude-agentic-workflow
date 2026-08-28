@@ -65,7 +65,9 @@ sesión siguen estas instrucciones:
    copia archivos de entorno, crea `docs/features/<slug>.md`.
 2. **Plan** (solo ruta `architectural`) — en la sesión del worktree: `/plan`
    escribe `{{PLANS_DIR}}/<slug>.md` y lo commitea en el branch de la feature.
-3. **Desarrollo** — sesión dedicada en el worktree. Doc de la feature al día.
+3. **Desarrollo** — sesión dedicada en el worktree. Con plan, `/execute` lo
+   ejecuta por subagentes (review por tarea + review final del branch); sin
+   plan, TDD directo. Doc de la feature al día.
 4. **Sincronización** — rebase contra `{{MAIN_BRANCH}}` al menos semanal y
    siempre antes del review: `git fetch origin && git rebase origin/{{MAIN_BRANCH}}`.
 5. **Review** — desde la sala de control, sobre el branch pusheado.
@@ -82,7 +84,7 @@ a `docs/features/<slug>.md`; la sesión del worktree la obedece.
 |---|---|---|
 | **spike** | Pregunta de factibilidad. El entregable es **una respuesta**, no código que se conserva. | Probar lo más barato posible. Sin plan. El código queda marcado como descartable. |
 | **bounded** | Cambio acotado sobre un flujo que **ya existe en este repo**. Un flag, un endpoint chico, un fix. | Implementar directo con TDD. **Sin documento de plan** — sería papeleo. |
-| **architectural** | Subsistema nuevo, o cambio que reorganiza cómo encajan las piezas o altera interfaces de las que otros dependen. | `/plan` **antes** de escribir código. El plan va a `{{PLANS_DIR}}/<slug>.md`. |
+| **architectural** | Subsistema nuevo, o cambio que reorganiza cómo encajan las piezas o altera interfaces de las que otros dependen. | `/plan` **antes** de escribir código (va a `{{PLANS_DIR}}/<slug>.md`), después `/execute`. |
 
 Reglas:
 

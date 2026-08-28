@@ -28,7 +28,8 @@ Reglas del changelog:
   lista de `## El modelo` (default `docs/plans`; ya era el directorio de los
   runbooks de barriers, ahora también el de los planes de features).
 - **Cambia** `## Ciclo de vida`: nuevo paso 2 (**Plan**, solo ruta
-  `architectural`) y renumeración de los siguientes.
+  `architectural`) y renumeración de los siguientes; el paso de desarrollo
+  nombra `/execute` como ejecutor del plan.
 - **Cambia** `## Barriers`: `docs/plans/` pasa a `{{PLANS_DIR}}/` (mismo valor
   por defecto; solo se parametriza).
 - **Cambia** `docs/features/TEMPLATE.md`: agrega los campos `Ruta` y `Plan` al

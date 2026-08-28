@@ -25,5 +25,20 @@ tpl=$(sed -n 's/.*contrato agentic-workflow v\([0-9]*\).*/\1/p' templates/AGENTI
 log=$(sed -n 's/^## v\([0-9]*\) .*/\1/p' templates/CONTRACT_CHANGELOG.md | head -1)
 [ "$tpl" = "$log" ] || err "contrato v$tpl pero el changelog encabeza en v$log"
 
-[ $fail -eq 0 ] && echo "OK: $(ls -d skills/*/ | wc -l | tr -d ' ') skills, contrato v$tpl"
+# 4. Cada link relativo a un .md dentro de una skill resuelve. Un link roto
+#    a una plantilla de prompt deja al subagente sin instrucciones.
+for f in skills/*/SKILL.md; do
+  d=$(dirname "$f")
+  for link in $(grep -oE '\]\([a-zA-Z0-9_.-]+\.md\)' "$f" | tr -d ']()'); do
+    [ -f "$d/$link" ] || err "$f enlaza a $link, que no existe"
+  done
+done
+
+# 5. Todo script de skill es ejecutable (si no, el agente no puede correrlo).
+for s in skills/*/scripts/*; do
+  [ -e "$s" ] || continue
+  [ -x "$s" ] || err "$s no es ejecutable"
+done
+
+[ $fail -eq 0 ] && echo "OK: $(ls -d skills/*/ | wc -l | tr -d ' ') skills, $(ls skills/*/scripts/* 2>/dev/null | wc -l | tr -d ' ') scripts, contrato v$tpl"
 exit $fail

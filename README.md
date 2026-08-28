@@ -19,6 +19,7 @@ committeada — no en la memoria del agente, que está anclada al directorio.
 | `/hotfix <slug>` · `close <slug>` | Bug de producción con ceremonia mínima: worktree propio, fix mínimo + test obligatorio, merge primero y deploy después, post-mortem al cerrar |
 | `/issue new` · `list` · `take <N>` | Backlog de GitHub → flujo: explora la idea en diálogo y la clasifica (`spike` / `bounded` / `architectural`), redacta el issue, lista con ruta sugerida, toma uno y arranca `/feature` o `/hotfix` con `Closes #N` cableado (requiere `gh`) |
 | `/plan` | Escribe el plan de implementación de la feature **dentro del worktree**, antes de codear: mapa de archivos, tareas bite-sized con ciclo TDD, sin placeholders. Solo para la ruta `architectural` |
+| `/execute` | Ejecuta el plan despachando un subagente fresco por tarea, con review de spec + calidad tras cada una, fix loop con tope de 5 rondas y review amplio del branch al final. Ledger en archivo que sobrevive a la compactación |
 | `/commit [scope]` | Crea un Conventional Commit en inglés (subject imperativo ≤ 72 chars, body con bullets), sin atribución de IA |
 | `/push [branch]` | Pushea los commits al branch indicado (o al actual), con `-u` si no hay upstream; nunca hace force-push |
 
@@ -65,11 +66,14 @@ que la sesión nueva lee y ejecuta.
                     │
 /issue take 42 ──▶ worktree + docs/features/<slug>.md ("Próximo paso: /plan")
                     │
-              sesión del worktree ──▶ /plan ──▶ docs/plans/<slug>.md ──▶ TDD
+              sesión del worktree ──▶ /plan ──▶ docs/plans/<slug>.md ──▶ /execute
 ```
 
 `/plan` no necesita argumentos: `git branch --show-current` da el slug, el
-slug da el doc, y el doc da objetivo, ruta y issue de origen.
+slug da el doc, y el doc da objetivo, ruta y issue de origen. `/execute`
+toma el plan desde ahí y lo ejecuta por subagentes: uno fresco por tarea,
+con review de spec y calidad después de cada una — que es la regla dura *el
+review lo hace una sesión que no es la autora* aplicada dentro del worktree.
 
 ## Diseño: núcleo genérico + contrato local
 

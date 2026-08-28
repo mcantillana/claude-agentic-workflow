@@ -7,7 +7,7 @@ argument-hint: (sin argumentos) | update
 # /init — inicializar el flujo agéntico en este proyecto
 
 Siembra la **capa local** que las demás skills del plugin (`/feature`,
-`/hotfix`, `/issue`) leen como contrato: `docs/AGENTIC_WORKFLOW.md` y
+`/hotfix`, `/issue`, `/plan`) leen como contrato: `docs/AGENTIC_WORKFLOW.md` y
 `docs/features/TEMPLATE.md`. Sin esta capa, esas skills se detienen y piden
 correr `/init` primero.
 
@@ -50,7 +50,9 @@ directorio base de esta skill).
    - Copia `templates/AGENTIC_WORKFLOW.template.md` a `docs/AGENTIC_WORKFLOW.md`
      reemplazando los placeholders: `{{REPO_DIR}}` (ruta de la raíz),
      `{{MAIN_BRANCH}}`, `{{WORKTREES_DIR}}` (convención:
-     `../<nombre-del-directorio-del-repo>-wt`), `{{ENV_FILES}}`,
+     `../<nombre-del-directorio-del-repo>-wt`), `{{PLANS_DIR}}` (default
+     `docs/plans`; no lo preguntes salvo que el repo ya use otro directorio
+     para planes o runbooks), `{{ENV_FILES}}`,
      `{{ENV_INSTRUCTIONS}}`, `{{TEST_INSTRUCTIONS}}`, `{{DEPLOY_INSTRUCTIONS}}`,
      `{{PROJECT_NOTES}}` (lo que el usuario quiera dejar anotado; si nada,
      "—"). No dejes ningún `{{...}}` sin resolver.
@@ -61,10 +63,10 @@ directorio base de esta skill).
    archivos a copiar) y **commitea** los dos archivos con mensaje
    `docs: init agentic workflow` — pide confirmación antes del commit.
 
-6. **Cierra indicando el siguiente paso:** `/feature <slug>` para la primera
-   feature, y recuerda las dos reglas que más cuesta internalizar: merges solo
-   desde la sala de control, y la memoria entre sesiones vive en
-   `docs/features/<slug>.md`.
+6. **Cierra indicando el siguiente paso:** `/issue new <idea>` (o
+   `/feature <slug>` si no usas GitHub) para el primer trabajo, y recuerda las
+   dos reglas que más cuesta internalizar: merges solo desde la sala de
+   control, y la memoria entre sesiones vive en `docs/features/<slug>.md`.
 
 ## `/init update` — migrar el contrato a la versión vigente
 

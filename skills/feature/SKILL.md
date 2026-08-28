@@ -40,7 +40,23 @@ descripción, propón un slug y confirma.
    solapamiento con una feature activa, adviértelo: riesgo de conflictos de
    merge (y de migraciones, si el proyecto las usa).
 
-3. **Decide el entorno** según la sección "Entorno por worktree" del
+3. **Ruta de trabajo** — cuánto diseño necesita antes de codear:
+   - **Si la feature viene de `/issue take`**, la ruta ya está resuelta: usa
+     la que te pasó esa skill (sale del cuerpo del issue). No vuelvas a
+     preguntar.
+   - **Si no**, pregúntala junto con el entorno del paso 4 (mismo
+     AskUserQuestion, sin round-trip extra):
+
+   | Ruta | Cuándo | Próximo paso en el worktree |
+   |---|---|---|
+   | `bounded` | cambio acotado sobre un flujo que **ya existe** en este repo | implementar directo con TDD |
+   | `architectural` | subsistema nuevo, o cambio que reorganiza cómo encajan las piezas | `/plan` antes de tocar código |
+   | `spike` | pregunta de factibilidad; el entregable es una respuesta, no código | probar barato, worktree descartable |
+
+   Ante la duda entre dos, toma la más pesada. La definición completa está en
+   la sección **Rutas de trabajo** del contrato.
+
+4. **Decide el entorno** según la sección "Entorno por worktree" del
    contrato. El objetivo es que el worktree quede **ejecutable de verdad**
    (recorrible en un navegador/CLI), no solo testeable — ten presente que el
    entorno compartido, si existe, corre el código de `MAIN`, no el del
@@ -48,7 +64,7 @@ descripción, propón un slug y confirma.
    (ej: entorno compartido vs propio, estrategia de datos). Si el contrato
    dice "no aplica", omite este paso.
 
-4. **Crea el worktree:**
+5. **Crea el worktree:**
    ```bash
    mkdir -p WT_DIR
    git worktree add WT_DIR/<slug> -b feature/<slug> MAIN
@@ -57,27 +73,39 @@ descripción, propón un slug y confirma.
    aplica las asignaciones que este pida (ej: puerto propio, nombre de
    proyecto compose). Elige valores que no choquen con otros worktrees
    activos (revisa sus archivos de entorno) y regístralos en el doc del
-   paso 5. No levantes el entorno tú: lo hace la sesión de la feature.
+   paso 6. No levantes el entorno tú: lo hace la sesión de la feature.
 
-5. **Documentación persistente:** copia `docs/features/TEMPLATE.md` a
+6. **Documentación persistente:** copia `docs/features/TEMPLATE.md` a
    `docs/features/<slug>.md` **dentro del worktree** y complétalo: objetivo,
-   entorno y puertos, alcance, colindancias detectadas, bitácora con fecha
-   de kickoff (fechas absolutas, no relativas).
+   **ruta** (paso 3), entorno y puertos, alcance, colindancias detectadas,
+   bitácora con fecha de kickoff (fechas absolutas, no relativas).
 
-6. **Commit inicial en el worktree** (nunca en `MAIN`):
+   **Completa la sección "Próximo paso" según la ruta** — esto es lo único
+   que cruza a la sesión del worktree, que todavía no existe y a la que no
+   podés invocarle nada:
+
+   | Ruta | Qué escribes en "Próximo paso" |
+   |---|---|
+   | `architectural` | "Corré `/plan` antes de escribir código." |
+   | `bounded` | "Implementá directo con TDD: test que falla, código mínimo, commit." |
+   | `spike` | "Respondé la pregunta lo más barato posible. El código es descartable." |
+
+7. **Commit inicial en el worktree** (nunca en `MAIN`):
    ```bash
    cd WT_DIR/<slug> && git add docs/features/<slug>.md && git commit -m "docs(<slug>): feature kickoff"
    ```
    Si la feature nace de un issue (#N), incluye `Closes #N` en el cuerpo del
    commit y anota "Origen: issue #N" en el doc.
 
-7. **Cierre del kickoff** — entrega al usuario un bloque final con:
+8. **Cierre del kickoff** — entrega al usuario un bloque final con:
    - `cd WT_DIR/<slug>` y abrir una sesión de Claude ahí (sugerir
      `/rename <slug>`).
-   - Primera instrucción para esa sesión: "lee `docs/features/<slug>.md` y
-     `docs/AGENTIC_WORKFLOW.md` antes de partir".
+   - Primera instrucción para esa sesión, **literal para copiar y pegar**:
+     "lee `docs/features/<slug>.md` y `docs/AGENTIC_WORKFLOW.md` antes de
+     partir". Ese doc trae el próximo paso; si la ruta es `architectural`,
+     nómbralo también acá: la sesión empieza con `/plan`.
    - Cómo dejar el entorno ejecutable, según el contrato (comandos
-     concretos, con los valores asignados en el paso 4).
+     concretos, con los valores asignados en el paso 5).
 
 ## `/feature list` — estado
 
@@ -98,6 +126,9 @@ descripción, propón un slug y confirma.
      sesión de la feature rebasee — no lo hagas tú sobre el worktree ajeno.
    - `docs/features/<slug>.md` existe en el branch y su Estado refleja el
      cierre (si falta, actualízalo como último commit del branch).
+   - Si la **Ruta** del doc es `architectural`, su campo **Plan** apunta a un
+     plan existente y sin tareas abiertas (`- [ ]`). Si quedan abiertas,
+     repórtalas y pregunta antes de mergear.
    - Pregunta si los tests pasaron en la sesión de la feature (comando según
      el contrato).
 
@@ -123,4 +154,5 @@ descripción, propón un slug y confirma.
 
 Una sesión por worktree · entorno completo o nada · merges a `MAIN` solo
 desde la sala de control · la memoria vive en `docs/features/<slug>.md` ·
-el review lo hace una sesión que no es la autora.
+el review lo hace una sesión que no es la autora · el plan lo escribe la
+sesión del worktree con `/plan`, nunca la sala de control.

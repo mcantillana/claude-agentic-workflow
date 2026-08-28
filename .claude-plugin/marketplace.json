@@ -8,7 +8,7 @@
     {
       "name": "agentic-workflow",
       "source": "./",
-      "description": "Flujo agéntico de desarrollo: 1 feature = 1 worktree = 1 branch = 1 sesión. Comandos: init, feature, hotfix, issue."
+      "description": "Flujo agéntico de desarrollo: 1 feature = 1 worktree = 1 branch = 1 sesión. Comandos: init, feature, hotfix, issue, plan, commit, push."
     }
   ]
 }

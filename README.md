@@ -17,7 +17,8 @@ committeada — no en la memoria del agente, que está anclada al directorio.
 | `/init` · `update` | Inicializa el flujo en un proyecto (contrato local `docs/AGENTIC_WORKFLOW.md` + `docs/features/TEMPLATE.md`, preguntando lo mínimo); `update` migra un contrato existente a la versión vigente del template — agrega las secciones nuevas sin pisar personalizaciones (versionado en `templates/CONTRACT_CHANGELOG.md`) |
 | `/feature <slug>` · `list` · `close <slug>` | Ciclo de vida de una feature: kickoff (worktree + branch + doc), estado de las activas, cierre con merge `--no-ff` y limpieza |
 | `/hotfix <slug>` · `close <slug>` | Bug de producción con ceremonia mínima: worktree propio, fix mínimo + test obligatorio, merge primero y deploy después, post-mortem al cerrar |
-| `/issue new` · `list` · `take <N>` | Backlog de GitHub → flujo: redacta issues bien formados, lista con ruta sugerida, toma uno y arranca `/feature` o `/hotfix` con `Closes #N` cableado (requiere `gh`) |
+| `/issue new` · `list` · `take <N>` | Backlog de GitHub → flujo: explora la idea en diálogo y la clasifica (`spike` / `bounded` / `architectural`), redacta el issue, lista con ruta sugerida, toma uno y arranca `/feature` o `/hotfix` con `Closes #N` cableado (requiere `gh`) |
+| `/plan` | Escribe el plan de implementación de la feature **dentro del worktree**, antes de codear: mapa de archivos, tareas bite-sized con ciclo TDD, sin placeholders. Solo para la ruta `architectural` |
 | `/commit [scope]` | Crea un Conventional Commit en inglés (subject imperativo ≤ 72 chars, body con bullets), sin atribución de IA |
 | `/push [branch]` | Pushea los commits al branch indicado (o al actual), con `-u` si no hay upstream; nunca hace force-push |
 
@@ -40,6 +41,35 @@ Para desarrollo local (itera sin pushear):
 ```
 
 Luego, en cada proyecto donde quieras el flujo: `/init` (una sola vez).
+
+## Rutas de trabajo: del issue al plan
+
+El diseño no se hace dos veces. `/issue new` explora la idea en diálogo y la
+clasifica en una de tres rutas, que deja escrita en el cuerpo del issue:
+
+| Ruta | Qué es | Qué pasa en el worktree |
+|---|---|---|
+| `spike` | pregunta de factibilidad; el entregable es una respuesta | probar barato, código descartable |
+| `bounded` | cambio acotado sobre un flujo que ya existe en el repo | TDD directo, **sin plan** |
+| `architectural` | subsistema nuevo o cambio que reorganiza las piezas | `/plan` antes de codear |
+
+La gracia está en cómo viaja esa decisión. `/issue take` **no escribe planes
+ni código**: prepara el worktree y termina. La sesión que va a escribir el
+plan todavía no existe, así que no hay nada que invocar — lo único que cruza
+el límite entre sesiones son los archivos committeados. Por eso la ruta se
+copia del issue a `docs/features/<slug>.md`, en una sección **Próximo paso**
+que la sesión nueva lee y ejecuta.
+
+```
+/issue new ──▶ issue #42 (**Ruta:** architectural)
+                    │
+/issue take 42 ──▶ worktree + docs/features/<slug>.md ("Próximo paso: /plan")
+                    │
+              sesión del worktree ──▶ /plan ──▶ docs/plans/<slug>.md ──▶ TDD
+```
+
+`/plan` no necesita argumentos: `git branch --show-current` da el slug, el
+slug da el doc, y el doc da objetivo, ruta y issue de origen.
 
 ## Diseño: núcleo genérico + contrato local
 

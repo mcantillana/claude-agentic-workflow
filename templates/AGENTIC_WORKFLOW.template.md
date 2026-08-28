@@ -1,6 +1,6 @@
 # Flujo de trabajo agéntico: worktrees + sesiones
 
-<!-- contrato agentic-workflow v2 — NO borrar esta línea: /init update la usa
+<!-- contrato agentic-workflow v4 — NO borrar esta línea: /init update la usa
      para saber qué secciones nuevas faltan en este proyecto -->
 
 > Este archivo es el **contrato local** del flujo agéntico en este proyecto.
@@ -21,6 +21,7 @@
 
 - Branch principal: `{{MAIN_BRANCH}}`
 - Directorio de worktrees: `{{WORKTREES_DIR}}/`
+- Directorio de planes y runbooks: `{{PLANS_DIR}}/`
 - Convención de branches: `feature/<slug>` y `hotfix/<slug>`
 
 ## Reglas duras
@@ -62,12 +63,38 @@ sesión siguen estas instrucciones:
 
 1. **Kickoff** — sala de control: `/feature <slug>`. Crea worktree + branch,
    copia archivos de entorno, crea `docs/features/<slug>.md`.
-2. **Desarrollo** — sesión dedicada en el worktree. Doc de la feature al día.
-3. **Sincronización** — rebase contra `{{MAIN_BRANCH}}` al menos semanal y
+2. **Plan** (solo ruta `architectural`) — en la sesión del worktree: `/plan`
+   escribe `{{PLANS_DIR}}/<slug>.md` y lo commitea en el branch de la feature.
+3. **Desarrollo** — sesión dedicada en el worktree. Doc de la feature al día.
+4. **Sincronización** — rebase contra `{{MAIN_BRANCH}}` al menos semanal y
    siempre antes del review: `git fetch origin && git rebase origin/{{MAIN_BRANCH}}`.
-4. **Review** — desde la sala de control, sobre el branch pusheado.
-5. **Cierre** — sala de control: `/feature close <slug>`. Merge `--no-ff`,
+5. **Review** — desde la sala de control, sobre el branch pusheado.
+6. **Cierre** — sala de control: `/feature close <slug>`. Merge `--no-ff`,
    limpieza de worktree/branch/entorno. El doc queda como registro.
+
+## Rutas de trabajo (cuánto diseño antes de codear)
+
+Cada trabajo entra por una de tres rutas. `/issue new` la clasifica y la deja
+escrita en el cuerpo del issue (línea `**Ruta:**`); `/issue take` la traslada
+a `docs/features/<slug>.md`; la sesión del worktree la obedece.
+
+| Ruta | Qué es | En el worktree |
+|---|---|---|
+| **spike** | Pregunta de factibilidad. El entregable es **una respuesta**, no código que se conserva. | Probar lo más barato posible. Sin plan. El código queda marcado como descartable. |
+| **bounded** | Cambio acotado sobre un flujo que **ya existe en este repo**. Un flag, un endpoint chico, un fix. | Implementar directo con TDD. **Sin documento de plan** — sería papeleo. |
+| **architectural** | Subsistema nuevo, o cambio que reorganiza cómo encajan las piezas o altera interfaces de las que otros dependen. | `/plan` **antes** de escribir código. El plan va a `{{PLANS_DIR}}/<slug>.md`. |
+
+Reglas:
+
+1. **Bounded mide el repo, no tu familiaridad.** Si el flujo que vas a cambiar
+   no está acá para leerlo, no es bounded.
+2. **Ante la duda entre dos rutas, la más pesada.** El trinquete va en un solo
+   sentido: la complejidad escondida sube la ruta a mitad de camino; nada baja.
+3. **El gate de aprobación no escala con la ruta.** Hasta un spike se propone
+   y se aprueba antes de ejecutarse. Lo que escala es el artefacto.
+4. **La ruta y el barrier son ejes independientes.** Un subsistema nuevo puede
+   ser `architectural` y caber perfecto en un worktree; un cambio de DNS puede
+   ser trivial de diseñar y aun así ser barrier.
 
 ## Barriers (trabajos que NO se toman como feature normal)
 
@@ -92,7 +119,7 @@ insiste, es una decisión explícita.
 Cómo se ejecuta (3 fases):
 
 1. **Planificar antes de tocar nada.** Sesión dedicada (plan mode) cuyo
-   entregable es un **runbook committeado** en `docs/plans/<slug>.md`:
+   entregable es un **runbook committeado** en `{{PLANS_DIR}}/<slug>.md`:
    secuencia de pasos a nivel de comandos, verificación tras cada paso,
    criterio seguir/abortar y rollback por etapa. El issue define el *qué*;
    el runbook baja al *cómo*.
@@ -106,7 +133,7 @@ Cómo se ejecuta (3 fases):
 3. **Congelar la mesa.** El flip se ejecuta con **cero worktrees activos**:
    nada mergeando en paralelo mientras la infra está a medio camino.
 
-El runbook en `docs/plans/` es el documento vivo del barrier (checklist con
+El runbook en `{{PLANS_DIR}}/` es el documento vivo del barrier (checklist con
 estado real); al terminar, el resultado se registra como en un deploy grande.
 
 ## Notas del proyecto

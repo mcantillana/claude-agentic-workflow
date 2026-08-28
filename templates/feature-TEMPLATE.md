@@ -4,7 +4,18 @@
 - **Branch:** `feature/<slug>`
 - **Worktree:** `<ruta del worktree>`
 - **Origen:** <issue #N, conversación, etc.>
+- **Ruta:** <bounded | architectural | spike>
+- **Plan:** <ruta al plan, o "—" si la ruta no lleva plan>
 - **Kickoff:** <AAAA-MM-DD>
+
+## Próximo paso
+
+<!-- Lo escribe el kickoff según la Ruta. Es lo único que cruza a la sesión
+     del worktree: si no está acá, no existe. La sesión lo lee y lo ejecuta. -->
+
+<architectural → "Corré /plan antes de escribir código."
+ bounded       → "Implementá directo con TDD: test que falla, código mínimo, commit."
+ spike         → "Respondé la pregunta lo más barato posible. El código es descartable.">
 
 ## Objetivo
 

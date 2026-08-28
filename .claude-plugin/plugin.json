@@ -1,7 +1,7 @@
 {
   "name": "agentic-workflow",
-  "description": "Flujo agéntico de desarrollo: 1 feature = 1 worktree = 1 branch = 1 sesión. Comandos: init, feature, hotfix, issue, commit, push.",
-  "version": "0.3.0",
+  "description": "Flujo agéntico de desarrollo: 1 feature = 1 worktree = 1 branch = 1 sesión. Comandos: init, feature, hotfix, issue, plan, execute, commit, push.",
+  "version": "0.5.0",
   "author": {
     "name": "Miguel Cantillana",
     "email": "miguel@propul.tech"

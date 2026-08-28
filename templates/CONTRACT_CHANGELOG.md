@@ -14,6 +14,27 @@ Reglas del changelog:
   `<!-- contrato agentic-workflow vN ... -->` bajo el H1.
 - Un contrato **sin** comentario de versión se trata como **v1**.
 
+## v4 (2026-08-28)
+
+<!-- Numerada v4 y no v3 porque la rama `feat/dl-dev-clickup-workflow` de
+     upstream ya reclama v3 (Roles DL/DEV + ClickUp). Dos v3 distintos
+     romperían /init update. -->
+
+- **Agrega** la sección `## Rutas de trabajo (cuánto diseño antes de codear)`
+  — las tres rutas (`spike` / `bounded` / `architectural`), qué hace cada una
+  en el worktree y las cuatro reglas. Posición: entre `## Ciclo de vida` y
+  `## Barriers`.
+- **Agrega** el bullet `Directorio de planes y runbooks: {{PLANS_DIR}}/` en la
+  lista de `## El modelo` (default `docs/plans`; ya era el directorio de los
+  runbooks de barriers, ahora también el de los planes de features).
+- **Cambia** `## Ciclo de vida`: nuevo paso 2 (**Plan**, solo ruta
+  `architectural`) y renumeración de los siguientes; el paso de desarrollo
+  nombra `/execute` como ejecutor del plan.
+- **Cambia** `## Barriers`: `docs/plans/` pasa a `{{PLANS_DIR}}/` (mismo valor
+  por defecto; solo se parametriza).
+- **Cambia** `docs/features/TEMPLATE.md`: agrega los campos `Ruta` y `Plan` al
+  encabezado y la sección `## Próximo paso` antes de `## Objetivo`.
+
 ## v2 (2026-08-06)
 
 - **Agrega** la sección `## Barriers (trabajos que NO se toman como feature

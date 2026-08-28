@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# Resuelve (y crea) el directorio de artefactos efímeros de UN plan: briefs de
+# tarea, reportes de implementadores, paquetes de review y el ledger de
+# progreso. Imprime la ruta absoluta.
+#
+# Un directorio por plan (.agentic/<nombre-del-plan>/) para que un plan
+# posterior en el mismo worktree no pueda leer ni pisar los artefactos de
+# otro. Un ledger viejo leído como progreso actual hace que el controlador
+# salte secuencias enteras de tareas; el scope por plan elimina ese fallo
+# de raíz.
+#
+# Vive en el working tree (no en .git/) porque Claude Code trata .git/ como
+# ruta protegida y le niega escritura a los agentes — lo que impediría que un
+# subagente implementador escriba su reporte. El .gitignore autoignorante en
+# .agentic/ lo mantiene fuera de `git status` y de commits accidentales sin
+# tocar ningún archivo versionado.
+#
+# Fuente única de la ubicación, para que task-brief y review-package no
+# puedan derivar a directorios distintos.
+#
+# Uso: workspace PLAN_FILE
+set -euo pipefail
+
+if [ $# -ne 1 ]; then
+  echo "uso: workspace PLAN_FILE" >&2
+  exit 2
+fi
+
+plan=$1
+[ -f "$plan" ] || { echo "no existe el plan: $plan" >&2; exit 2; }
+
+slug=$(basename "$plan" .md)
+[ -n "$slug" ] && [ "$slug" != "." ] && [ "$slug" != ".." ] \
+  || { echo "no puedo derivar un nombre de workspace de: $plan" >&2; exit 2; }
+
+root=$(git rev-parse --show-toplevel)
+base="$root/.agentic"
+dir="$base/$slug"
+mkdir -p "$dir"
+printf '*\n' > "$base/.gitignore"
+cd "$dir" && pwd

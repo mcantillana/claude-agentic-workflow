@@ -1,4 +1,5 @@
 ---
+name: commit
 allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git diff:*), Bash(git commit:*), Bash(git log:*)
 argument-hint: [optional scope or note]
 description: Create a Conventional Commit in English, no AI attribution

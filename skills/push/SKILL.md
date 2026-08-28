@@ -1,4 +1,5 @@
 ---
+name: push
 allowed-tools: Bash(git push:*), Bash(git branch:*), Bash(git rev-parse:*), Bash(git status:*)
 argument-hint: [branch]
 description: Push committed changes to the given branch

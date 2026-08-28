@@ -16,7 +16,7 @@ Agent (subagent_type: general-purpose)
 
     ## La tarea
 
-    Leé el brief: [ARCHIVO_BRIEF]
+    Lee el brief: [ARCHIVO_BRIEF]
 
     ## Los hallazgos a verificar
 
@@ -24,32 +24,32 @@ Agent (subagent_type: general-purpose)
 
     ## El fix
 
-    Leé el reporte del implementador (los reportes de fix se agregan al
+    Lee el reporte del implementador (los reportes de fix se agregan al
     final): [ARCHIVO_REPORTE]
 
     **Base del fix:** [FIX_BASE_SHA] (el head que vio el review anterior)
     **Head:** [HEAD_SHA]
     **Archivo de diff:** [ARCHIVO_DIFF]
 
-    Leé el archivo de diff una vez: trae los commits del fix, el resumen y el
-    diff con contexto. No re-corras comandos git. Si no está, sacalo vos:
+    Lee el archivo de diff una vez: trae los commits del fix, el resumen y el
+    diff con contexto. No re-corras comandos git. Si no está, sácalo tú:
     `git diff --stat [FIX_BASE_SHA]..[HEAD_SHA]`.
 
     Tu review es de solo lectura. No mutes el working tree, el índice, HEAD
     ni el estado del branch.
 
-    ## Vos no despachás subagentes
+    ## Tú no despachas subagentes
 
-    Hacé todo el review vos. Nunca generes un subagente para revisar parte
+    Haz todo el review tú. Nunca generes un subagente para revisar parte
     del diff ni otro revisor para una segunda opinión. Su veredicto no vale
     nada y duplica un asiento a costo completo.
 
     ## Alcance
 
-    Tu alcance es la lista de hallazgos y el diff del fix. Veredictá cada
-    hallazgo. Inspeccioná el diff del fix por problemas que el fix mismo
+    Tu alcance es la lista de hallazgos y el diff del fix. Veredicta cada
+    hallazgo. Inspecciona el diff del fix por problemas que el fix mismo
     introdujo. **NO** re-revises código que el fix no tocó: si ves algo
-    enteramente fuera del diff del fix, reportalo bajo Observaciones fuera de
+    enteramente fuera del diff del fix, repórtalo bajo Observaciones fuera de
     alcance — no bloquea la tarea ni extiende el loop. El review amplio de
     todo el branch pasa después.
 
@@ -57,12 +57,12 @@ Agent (subagent_type: general-purpose)
 
     El implementador re-corrió los tests que cubren el código modificado y
     agregó los resultados al reporte. Tratalo como afirmaciones sin
-    verificar: confirmá que el reporte de fix nombra los tests que cubren y
-    muestra su salida, y verificá contra el diff. No re-corras la suite.
+    verificar: confirma que el reporte de fix nombra los tests que cubren y
+    muestra su salida, y verifica contra el diff. No re-corras la suite.
 
     ## Formato de salida
 
-    Tu mensaje final es el reporte: empezá directo con el primer veredicto.
+    Tu mensaje final es el reporte: empieza directo con el primer veredicto.
 
     ### Veredictos
 
@@ -84,7 +84,7 @@ Agent (subagent_type: general-purpose)
     ### Veredicto de la ronda
 
     **Ronda:** [Todos los hallazgos atendidos, sin roturas nuevas
-    Críticas/Importantes | Quedan hallazgos abiertos] — listá los abiertos.
+    Críticas/Importantes | Quedan hallazgos abiertos] — lista los abiertos.
 ```
 
 **Placeholders:** `[MODELO]`, `[ARCHIVO_BRIEF]`, `[HALLAZGOS]` (los

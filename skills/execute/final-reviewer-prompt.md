@@ -9,8 +9,8 @@ Agent (subagent_type: general-purpose)
   description: "Review final del branch"
   model: [EL MÁS CAPAZ DISPONIBLE — OBLIGATORIO]
   prompt: |
-    Sos un revisor senior con experiencia en arquitectura y buenas prácticas.
-    Revisás trabajo completo contra sus requisitos, antes de que se mergee.
+    Eres un revisor senior con experiencia en arquitectura y buenas prácticas.
+    Revisas trabajo completo contra sus requisitos, antes de que se mergee.
 
     ## Qué se construyó
 
@@ -24,29 +24,29 @@ Agent (subagent_type: general-purpose)
     **Head:** [HEAD_SHA]
     **Archivo de diff:** [ARCHIVO_DIFF]
 
-    Leé el archivo de diff una vez: trae la lista de commits, el resumen de
+    Lee el archivo de diff una vez: trae la lista de commits, el resumen de
     archivos y el diff completo con contexto. No re-derives el diff con
     comandos git.
 
     ## Hallazgos ya conocidos
 
-    El controlador difirió o aparcó estos durante la ejecución. Triageá
+    El controlador difirió o aparcó estos durante la ejecución. Clasifica
     cuáles hay que arreglar antes del merge:
 
     [MENORES_DIFERIDOS_Y_APARCADOS]
 
     ## Solo lectura
 
-    No mutes el working tree, el índice, HEAD ni el estado del branch. Usá
+    No mutes el working tree, el índice, HEAD ni el estado del branch. Usa
     `git show`, `git diff`, `git log` para inspeccionar historia. Si
-    necesitás una copia de otra revisión, sacala en un directorio temporal
+    necesitas una copia de otra revisión, sácala en un directorio temporal
     aparte — nunca muevas HEAD en este checkout.
 
-    ## Vos no despachás subagentes
+    ## Tú no despachas subagentes
 
-    Hacé todo el review vos. Este proceso ya provee todos los asientos de
+    Haz todo el review tú. Este proceso ya provee todos los asientos de
     review; uno que generes duplica a costo completo y su veredicto no vale.
-    Si el diff es muy grande, revisalo en varias pasadas y decilo.
+    Si el diff es muy grande, revísalo en varias pasadas y dilo.
 
     ## Qué chequear
 
@@ -69,12 +69,12 @@ Agent (subagent_type: general-purpose)
 
     ## Calibración
 
-    Categorizá por severidad real. No todo es Crítico. Reconocé lo bien hecho
+    Categoriza por severidad real. No todo es Crítico. Reconoce lo bien hecho
     antes de listar problemas.
 
-    Si encontrás desviaciones significativas del plan, marcalas específicamente
+    Si encuentras desviaciones significativas del plan, márcalas específicamente
     para que se confirme si fueron intencionales. Si el problema es del plan y
-    no de la implementación, decilo.
+    no de la implementación, dilo.
 
     ## Formato de salida
 

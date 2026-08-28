@@ -82,13 +82,13 @@ descripción, propón un slug y confirma.
 
    **Completa la sección "Próximo paso" según la ruta** — esto es lo único
    que cruza a la sesión del worktree, que todavía no existe y a la que no
-   podés invocarle nada:
+   puedes invocarle nada:
 
    | Ruta | Qué escribes en "Próximo paso" |
    |---|---|
-   | `architectural` | "Corré `/plan` antes de escribir código." |
-   | `bounded` | "Implementá directo con TDD: test que falla, código mínimo, commit." |
-   | `spike` | "Respondé la pregunta lo más barato posible. El código es descartable." |
+   | `architectural` | "Corre `/plan` antes de escribir código." |
+   | `bounded` | "Implementa directo con TDD: test que falla, código mínimo, commit." |
+   | `spike` | "Responde la pregunta lo más barato posible. El código es descartable." |
 
 7. **Commit inicial en el worktree** (nunca en `MAIN`):
    ```bash
@@ -103,7 +103,7 @@ descripción, propón un slug y confirma.
    - Primera instrucción para esa sesión, **literal para copiar y pegar**:
      "lee `docs/features/<slug>.md` y `docs/AGENTIC_WORKFLOW.md` antes de
      partir". Ese doc trae el próximo paso; si la ruta es `architectural`,
-     nómbralo también acá: la sesión empieza con `/plan`.
+     nómbralo también aquí: la sesión empieza con `/plan`.
    - Cómo dejar el entorno ejecutable, según el contrato (comandos
      concretos, con los valores asignados en el paso 5).
 

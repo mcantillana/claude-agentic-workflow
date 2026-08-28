@@ -6,7 +6,7 @@
 # Un directorio por plan (.agentic/<nombre-del-plan>/) para que un plan
 # posterior en el mismo worktree no pueda leer ni pisar los artefactos de
 # otro. Un ledger viejo leído como progreso actual hace que el controlador
-# saltee secuencias enteras de tareas; el scope por plan elimina ese fallo
+# salte secuencias enteras de tareas; el scope por plan elimina ese fallo
 # de raíz.
 #
 # Vive en el working tree (no en .git/) porque Claude Code trata .git/ como

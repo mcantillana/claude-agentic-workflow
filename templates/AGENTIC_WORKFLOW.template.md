@@ -89,7 +89,7 @@ a `docs/features/<slug>.md`; la sesión del worktree la obedece.
 Reglas:
 
 1. **Bounded mide el repo, no tu familiaridad.** Si el flujo que vas a cambiar
-   no está acá para leerlo, no es bounded.
+   no está aquí para leerlo, no es bounded.
 2. **Ante la duda entre dos rutas, la más pesada.** El trinquete va en un solo
    sentido: la complejidad escondida sube la ruta a mitad de camino; nada baja.
 3. **El gate de aprobación no escala con la ruta.** Hasta un spike se propone

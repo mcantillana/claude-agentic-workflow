@@ -70,51 +70,51 @@ haberle mostrado al usuario el borrador y que lo apruebe. Vale para las tres
 rutas: la ceremonia escala con la tarea, el gate de aprobación nunca.
 </HARD-GATE>
 
-### Paso 1 — clasificá la ruta, en voz alta
+### Paso 1 — clasifica la ruta, en voz alta
 
-Antes de la primera pregunta, decí qué ruta ves y por qué, para que el
+Antes de la primera pregunta, di qué ruta ves y por qué, para que el
 usuario pueda corregirte:
 
 - **spike** — una pregunta de factibilidad ("¿se puede...?", "¿es posible...?",
   "rápido y sucio está bien") cuyo entregable es **una respuesta, no código
-  que se conserva**. Planteá la pregunta y cómo la responderías en 2-3 frases.
+  que se conserva**. Plantea la pregunta y cómo la responderías en 2-3 frases.
   Sin diseño largo.
 - **bounded** — un cambio bien acotado sobre código **que ya existe en este
   repo**: un flag nuevo, un endpoint chico, un fix de un archivo. Entender de
   qué tipo de app se trata NO alcanza: bounded significa que el flujo que vas
-  a cambiar **ya está acá para leerlo**. Si no hay flujo existente que
+  a cambiar **ya está aquí para leerlo**. Si no hay flujo existente que
   modificar, no es bounded.
 - **architectural** — proyectos nuevos, subsistemas nuevos, cambios que
   reorganizan cómo encajan las piezas o alteran interfaces de las que otros
   dependen.
 
-**Ante la duda entre dos rutas, tomá la más pesada.** El trinquete va en un
-solo sentido: si aparece complejidad escondida a mitad de camino, subís de
-ruta — decilo y subí. Nada baja de ruta a mitad de camino.
+**Ante la duda entre dos rutas, toma la más pesada.** El trinquete va en un
+solo sentido: si aparece complejidad escondida a mitad de camino, subes de
+ruta — dilo y sube. Nada baja de ruta a mitad de camino.
 
 Escribir un plan de más cuesta una tarde. Descubrir que hacía falta uno,
 cuesta la feature.
 
-### Paso 2 — explorá y preguntá
+### Paso 2 — explora y pregunta
 
-Mirá primero el repo (archivos, docs, commits recientes) para no preguntar lo
-que podés deducir. Después:
+Revisa primero el repo (archivos, docs, commits recientes) para no preguntar lo
+que puedes deducir. Después:
 
-- **Una pregunta por mensaje.** Si un tema necesita más, partilo en varias.
-- Preferí opción múltiple (AskUserQuestion) cuando se pueda.
-- Apuntá a: propósito, restricciones, criterio de éxito.
-- Si la idea abarca **varios subsistemas independientes**, decilo de entrada
+- **Una pregunta por mensaje.** Si un tema necesita más, divídelo en varias.
+- Prefiere opción múltiple (AskUserQuestion) cuando se pueda.
+- Apunta a: propósito, restricciones, criterio de éxito.
+- Si la idea abarca **varios subsistemas independientes**, dilo de entrada
   en vez de gastar preguntas refinando algo que primero hay que descomponer:
-  proponé partirlo en issues separados, cada uno con software funcionando por
-  sí solo, y seguí con el primero.
-- **YAGNI sin piedad:** sacá de la propuesta todo lo que no se necesita ahora.
+  propón partirlo en issues separados, cada uno con software funcionando por
+  sí solo, y sigue con el primero.
+- **YAGNI sin piedad:** saca de la propuesta todo lo que no se necesita ahora.
 
 Cuánto preguntar según la ruta: *spike* casi nada (la pregunta ya es el
 alcance) · *bounded* las que importan y nada más · *architectural* propósito,
 restricciones, criterio de éxito, y 2-3 enfoques con sus trade-offs y tu
 recomendación al frente.
 
-### Paso 3 — redactá el cuerpo
+### Paso 3 — redacta el cuerpo
 
 En el idioma del usuario, con estas secciones:
 
@@ -139,22 +139,22 @@ se escribe después con `/plan`, en el worktree.
 ### Paso 4 — etiqueta
 
 Capacidad nueva → `feature`/`enhancement`; algo roto → `bug`. Confirmala si
-no es obvia y usá las que ya existan en el repo (`gh label list`). **La ruta
+no es obvia y usa las que ya existan en el repo (`gh label list`). **La ruta
 no lleva etiqueta**: vive en el cuerpo, así no hay que crear labels nuevos.
 
-### Paso 5 — mostrá el borrador y esperá el sí
+### Paso 5 — muestra el borrador y espera el sí
 
-Es una acción de cara al repo. Mostralo completo y esperá aprobación
+Es una acción de cara al repo. Mostralo completo y espera aprobación
 explícita. Presentar el borrador y crear el issue en el mismo turno es
 saltarse el gate.
 
-### Paso 6 — creá y ofrecé el siguiente paso
+### Paso 6 — crea y ofrece el siguiente paso
 
 ```bash
 gh issue create --title "..." --label <etiqueta> --body "..."
 ```
 
-Reportá número y URL. Ofrecé `/issue take <N>` como siguiente paso; no lo
+Reporta número y URL. Ofrece `/issue take <N>` como siguiente paso; no lo
 asumas.
 
 ### Señales de que te estás autoengañando
@@ -162,61 +162,61 @@ asumas.
 | Pensamiento | Realidad |
 |---|---|
 | "esto es muy simple para necesitar diseño" | Simple significa diseño corto, no cero diseño. Dos frases y aprobación. |
-| "le pongo bounded y me salteo el diseño" | Buscar la etiqueta que evita trabajo **es** la duda. Tomá la ruta pesada. |
-| "es bounded y el diseño es obvio, arranco mientras lo lee" | El gate es la aprobación, no el largo del diseño. Presentá y parate. |
-| "conozco este tipo de app, es bounded" | Bounded mide el repo, no tu familiaridad. Si el flujo no está acá, no es bounded. |
-| "creció, pero ya casi termino, no reclasifico" | La complejidad escondida sube la ruta a mitad de camino. Pará y decilo. |
-| "el spike funcionó, me quedo con el código" | El entregable de un spike es una respuesta. Conservar el código es un pedido nuevo: clasificalo. |
+| "le pongo bounded y me salto el diseño" | Buscar la etiqueta que evita trabajo **es** la duda. Toma la ruta pesada. |
+| "es bounded y el diseño es obvio, arranco mientras lo lee" | El gate es la aprobación, no el largo del diseño. Presenta y detente. |
+| "conozco este tipo de app, es bounded" | Bounded mide el repo, no tu familiaridad. Si el flujo no está aquí, no es bounded. |
+| "creció, pero ya casi termino, no reclasifico" | La complejidad escondida sube la ruta a mitad de camino. Detente y dilo. |
+| "el spike funcionó, me quedo con el código" | El entregable de un spike es una respuesta. Conservar el código es un pedido nuevo: clasifícalo. |
 
 ## `/issue list` — abiertos con ruta sugerida
 
 1. `gh issue list --state open --json number,title,labels,assignees,url,body`
-2. De cada `body`, extraé la línea `**Ruta:**` (si no está, mostrá `—`).
-3. Derivá la ruta de skill según el mapa (marcá los `bug` como "hotfix? —
+2. De cada `body`, extrae la línea `**Ruta:**` (si no está, muestra `—`).
+3. Deriva la ruta de skill según el mapa (marca los `bug` como "hotfix? —
    confirmar urgencia", los sin etiqueta como "preguntar", y los que por
    título/cuerpo huelan a barrier como "⚠️ barrier — no como feature normal").
 4. Tabla: `#` | título | etiqueta(s) | **ruta** | asignado | skill sugerida.
-   Recordá que se toma uno con `/issue take <N>`.
+   Recuerda que se toma uno con `/issue take <N>`.
 
 ## `/issue take <N>` — tomar y arrancar
 
 Esta skill **no escribe planes ni código**: prepara el worktree y termina.
 El plan lo escribe `/plan` después, en la sesión del worktree.
 
-1. **Leé el issue a fondo:**
+1. **Lee el issue a fondo:**
    ```bash
    gh issue view <N> --json number,title,body,labels,assignees,state,url --comments
    ```
    Si está cerrado, detente. Si tiene otro asignado, adviértelo y pregunta.
 
-2. **Resolvé la ruta de trabajo** desde la línea `**Ruta:**` del cuerpo.
-   - **Si no está** (issue creado a mano o por otra persona): clasificalo
-     ahora con los criterios del Paso 1 de `/issue new`, confirmalo con el
-     usuario, y escribilo al issue para que quede:
+2. **Resuelve la ruta de trabajo** desde la línea `**Ruta:**` del cuerpo.
+   - **Si no está** (issue creado a mano o por otra persona): clasifícalo
+     ahora con los criterios del Paso 1 de `/issue new`, confírmalo con el
+     usuario, y escríbelo al issue para que quede:
      `gh issue edit <N> --body "..."`.
    - **Si es `spike`:** no asumas worktree. Un spike entrega una respuesta;
-     explicá eso y preguntá si igual quiere un worktree descartable (que se
+     explica eso y pregunta si igual quiere un worktree descartable (que se
      cierra con `git worktree remove` + `git branch -D`, sin merge) o si lo
-     resolvés en la sala de control.
+     resuelves en la sala de control.
 
-3. **Chequeá si es barrier** (ver Detección de barriers). Si lo es: NO crees
-   worktree — explicá por qué y ofrecé el camino de barriers (sesión de
+3. **Chequea si es barrier** (ver Detección de barriers). Si lo es: NO crees
+   worktree — explica por qué y ofrece el camino de barriers (sesión de
    planificación → runbook en `docs/plans/<slug>.md`). Solo si el usuario
    insiste explícitamente se sigue por `/feature`, dejando constancia.
 
-4. **Decidí la skill destino** (`feature` o `hotfix`) según el mapa, con
+4. **Decide la skill destino** (`feature` o `hotfix`) según el mapa, con
    confirmación en los casos que la piden.
 
-5. **Proponé un slug** kebab-case corto derivado del título y confirmalo.
+5. **Propón un slug** kebab-case corto derivado del título y confírmalo.
 
-6. **Asigná el issue:** `gh issue edit <N> --add-assignee @me`.
+6. **Asigna el issue:** `gh issue edit <N> --add-assignee @me`.
 
-7. **Arrancá la skill destino** pasándole **el slug, el objetivo del issue y
+7. **Arranca la skill destino** pasándole **el slug, el objetivo del issue y
    la ruta de trabajo**. `/feature` escribe los tres en
    `docs/features/<slug>.md` — ese doc es lo único que cruza a la sesión del
    worktree, así que la ruta tiene que llegar ahí o se pierde.
 
-8. **Cableá el cierre automático:** la referencia `Closes #<N>` debe quedar
+8. **Cablea el cierre automático:** la referencia `Closes #<N>` debe quedar
    en el historial del branch (el kickoff de `/feature` la pone en el commit
    inicial y en el doc; en `/hotfix` va en el commit del fix). Así GitHub
    cierra el issue solo al mergear al branch principal — esta skill no cierra

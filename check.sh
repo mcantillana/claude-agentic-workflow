@@ -40,5 +40,14 @@ for s in skills/*/scripts/*; do
   [ -x "$s" ] || err "$s no es ejecutable"
 done
 
+# 6. Español neutro: los skills se escriben en la misma variante que los
+#    originales (imperativo tú, sin voseo). Solo marcadores inequívocos, para
+#    no dar falsos positivos.
+for f in skills/*/SKILL.md skills/*/*-prompt.md templates/*.md README.md; do
+  [ -e "$f" ] || continue
+  hit=$(grep -noiE '\b(vos|querés|tenés|podés|sabés|hacés|decís|sos)\b' "$f" | head -3 || true)
+  [ -z "$hit" ] || err "$f tiene voseo: $(echo $hit | tr '\n' ' ')"
+done
+
 [ $fail -eq 0 ] && echo "OK: $(ls -d skills/*/ | wc -l | tr -d ' ') skills, $(ls skills/*/scripts/* 2>/dev/null | wc -l | tr -d ' ') scripts, contrato v$tpl"
 exit $fail

@@ -48,7 +48,7 @@ pregunta objetivo y alcance antes de seguir.
 ## Paso 1 — mapa de archivos
 
 Antes de definir tareas, lista qué archivos se crean o modifican y de qué es
-responsable cada uno. Acá se fijan las decisiones de descomposición:
+responsable cada uno. Aquí se fijan las decisiones de descomposición:
 
 - Cada archivo, una responsabilidad clara y una interfaz definida.
 - Lo que cambia junto, vive junto. Separa por responsabilidad, no por capa
@@ -61,9 +61,9 @@ responsable cada uno. Acá se fijan las decisiones de descomposición:
 ## Paso 2 — tamaño de las tareas
 
 Una tarea es la **unidad más chica que carga su propio ciclo de test** y
-merece el visto bueno de un revisor fresco. Plegá setup, configuración,
+merece el visto bueno de un revisor fresco. Pliega setup, configuración,
 scaffolding y documentación dentro de la tarea cuyo entregable los necesita.
-Separá solo donde un revisor podría rechazar una tarea y aprobar la vecina.
+Separa solo donde un revisor podría rechazar una tarea y aprobar la vecina.
 Cada tarea termina en un entregable testeable por sí solo.
 
 Dentro de la tarea, **cada paso es una acción de 2-5 minutos**: escribir el
@@ -144,7 +144,7 @@ Cada paso lleva el contenido real. Esto son **fallas del plan**, no atajos:
 - "TBD", "TODO", "completar después"
 - "agregar manejo de errores apropiado" / "cubrir edge cases"
 - "escribir tests para lo anterior" sin el código del test
-- "igual que la Tarea N" — repetí el código: se leen fuera de orden
+- "igual que la Tarea N" — repite el código: se leen fuera de orden
 - pasos que dicen *qué* hacer sin mostrar *cómo* (los pasos de código llevan
   bloque de código)
 - referencias a tipos o funciones que ninguna tarea define
@@ -154,13 +154,13 @@ Cada paso lleva el contenido real. Esto son **fallas del plan**, no atajos:
 Con ojos frescos, contra el doc de la feature:
 
 1. **Cobertura del alcance:** ¿cada punto del Alcance tiene una tarea que lo
-   implementa? Si falta, agregá la tarea.
-2. **Barrido de placeholders:** buscá los patrones de arriba y arreglalos.
+   implementa? Si falta, agrega la tarea.
+2. **Barrido de placeholders:** busca los patrones de arriba y arreglalos.
 3. **Consistencia de tipos:** ¿las firmas y nombres que usás en la Tarea 7
    son los que definiste en la Tarea 3? `clearLayers()` en una y
    `clearFullLayers()` en otra es un bug.
 
-Arreglá inline y seguí. No re-revises.
+Arregla inline y sigue. No re-revises.
 
 ## Paso 5 — commitear y enlazar
 
@@ -169,8 +169,8 @@ git add PLANS_DIR/<slug>.md docs/features/<slug>.md
 git commit -m "docs(<slug>): implementation plan"
 ```
 
-En `docs/features/<slug>.md`: completá `**Plan:**` con la ruta, cambiá
-"Próximo paso" por "Ejecutar el plan" y agregá la entrada a la Bitácora con
+En `docs/features/<slug>.md`: completa `**Plan:**` con la ruta, cambia
+"Próximo paso" por "Ejecutar el plan" y agrega la entrada a la Bitácora con
 fecha absoluta.
 
 **Nunca commitees en `MAIN`.** El plan vive en el branch de la feature y
@@ -178,7 +178,7 @@ llega a `MAIN` con el merge de `/feature close`.
 
 ## Paso 6 — elegir cómo se ejecuta
 
-Con el plan guardado, ofrecé la elección; no la asumas:
+Con el plan guardado, ofrece la elección; no la asumas:
 
 > Plan guardado en `PLANS_DIR/<slug>.md`, con N tareas. Dos formas de
 > ejecutarlo:
@@ -188,16 +188,16 @@ Con el plan guardado, ofrecé la elección; no la asumas:
 > review amplio del branch al final, y un ledger que sobrevive a la
 > compactación.
 >
-> **2. En esta sesión** — ejecuto las tareas acá, tarea por tarea, marcando
+> **2. En esta sesión** — ejecuto las tareas aquí, tarea por tarea, marcando
 > los `- [ ]` y con checkpoint al final de cada una para que revises.
 >
 > ¿Cuál?
 
-Si elige la 1, corré `/execute`. Si elige la 2, ejecutá acá.
+Si elige la 1, corre `/execute`. Si elige la 2, ejecuta aquí.
 
 **En cualquiera de las dos:** si el plan resulta estar mal a mitad de camino,
-corregí el plan y commiteá la corrección — es un documento vivo, no un
-contrato con vos mismo.
+corrige el plan y commitea la corrección — es un documento vivo, no un
+contrato con tú mismo.
 
 ## Reglas duras
 

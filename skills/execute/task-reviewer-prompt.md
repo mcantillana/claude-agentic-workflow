@@ -19,14 +19,14 @@ Agent (subagent_type: general-purpose)
 
     ## Qué se pidió
 
-    Leé el brief: [ARCHIVO_BRIEF]
+    Lee el brief: [ARCHIVO_BRIEF]
 
     Restricciones globales que atan a esta tarea:
     [RESTRICCIONES_GLOBALES]
 
     ## Qué dice el implementador que construyó
 
-    Leé su reporte: [ARCHIVO_REPORTE]
+    Lee su reporte: [ARCHIVO_REPORTE]
 
     ## Diff bajo revisión
 
@@ -34,16 +34,16 @@ Agent (subagent_type: general-purpose)
     **Head:** [HEAD_SHA]
     **Archivo de diff:** [ARCHIVO_DIFF]
 
-    Leé el archivo de diff una vez: contiene la lista de commits, el resumen
+    Lee el archivo de diff una vez: contiene la lista de commits, el resumen
     de archivos y el diff completo con contexto, y es tu vista del cambio.
     Las líneas de contexto SON los archivos cambiados: no leas un archivo
-    cambiado por separado salvo que un hunk que tenés que juzgar quede
-    cortado a la mitad — y decilo en tu reporte. No re-corras comandos git.
-    Si el archivo de diff no está, sacá el diff vos:
+    cambiado por separado salvo que un hunk que tienes que juzgar quede
+    cortado a la mitad — y dilo en tu reporte. No re-corras comandos git.
+    Si el archivo de diff no está, saca el diff tú:
     `git diff --stat [BASE_SHA]..[HEAD_SHA]` y `git diff [BASE_SHA]..[HEAD_SHA]`.
-    No recorras el codebase. Inspeccioná código fuera del diff solo para
+    No recorras el codebase. Inspecciona código fuera del diff solo para
     evaluar un riesgo concreto que puedas nombrar — un chequeo enfocado por
-    riesgo nombrado, y nombrá los dos en tu reporte. Los cambios
+    riesgo nombrado, y nombra los dos en tu reporte. Los cambios
     transversales son riesgos legítimos: si el diff cambia orden de locks, el
     contrato de una función o API, o estado mutable compartido, revisar los
     call sites es el método correcto.
@@ -51,60 +51,60 @@ Agent (subagent_type: general-purpose)
     Tu review es de solo lectura sobre este checkout. No mutes el working
     tree, el índice, HEAD ni el estado del branch de ninguna forma.
 
-    ## Vos no despachás subagentes
+    ## Tú no despachas subagentes
 
-    Hacé todo el review vos. Nunca generes un subagente para revisar parte
+    Haz todo el review tú. Nunca generes un subagente para revisar parte
     del diff, ni otro revisor para una segunda opinión. Este proceso ya
     provee todos los asientos de review que el trabajo tiene; uno que generes
-    vos duplica uno de ellos a costo completo y su veredicto no vale nada. Si
-    el diff te resulta muy grande para una pasada, revisalo en varias vos
-    mismo y decilo en el reporte.
+    tú duplica uno de ellos a costo completo y su veredicto no vale nada. Si
+    el diff te resulta muy grande para una pasada, revísalo en varias tú
+    mismo y dilo en el reporte.
 
     ## No le creas al reporte
 
-    Tratá el reporte del implementador como afirmaciones sin verificar. Puede
-    estar incompleto, ser impreciso u optimista. Verificá contra el diff. Las
+    Trata el reporte del implementador como afirmaciones sin verificar. Puede
+    estar incompleto, ser impreciso u optimista. Verifica contra el diff. Las
     justificaciones de diseño también son afirmaciones: "lo dejé por YAGNI",
     "lo mantuve simple a propósito" o cualquier otra es el implementador
-    calificando su propio trabajo. Juzgá el código por sus méritos: una
+    calificando su propio trabajo. Juzga el código por sus méritos: una
     justificación declarada nunca baja la severidad de un hallazgo.
 
     ## Tests
 
     El implementador ya corrió los tests y reportó resultados con evidencia
     TDD para exactamente este código. No re-corras la suite para confirmar su
-    reporte. Corré un test solo si leer el código te levanta una duda
+    reporte. Corre un test solo si leer el código te levanta una duda
     específica que ninguna corrida existente responde — y ahí, un test
     enfocado, nunca una suite completa, un detector de races ni loops
-    repetidos. Si te parece que hace falta validación pesada, recomendala en
+    repetidos. Si te parece que hace falta validación pesada, recomiéndala en
     el reporte en vez de correrla.
 
     Warnings o ruido en la salida de tests que reportó el implementador son
     hallazgos: la salida debería estar limpia.
 
     Evidencia que no ves no es evidencia que no existe. Si el reporte o su
-    evidencia parece truncado, o no encontrás los resultados que dice, releé
+    evidencia parece truncado, o no encuentras los resultados que dice, relee
     el archivo en la ruta indicada — y si genuinamente falta o está corrupto,
-    reportalo como brecha para el controlador. Re-correr la suite para
+    repórtalo como brecha para el controlador. Re-correr la suite para
     regenerar lo que no lograste leer no es verificación.
 
     ## Parte 1: cumplimiento de spec
 
-    Compará el diff contra "Qué se pidió":
+    Compara el diff contra "Qué se pidió":
 
-    - **Faltante:** requisitos salteados, omitidos, o declarados sin
+    - **Faltante:** requisitos saltados, omitidos, o declarados sin
       implementar
     - **De más:** funcionalidad no pedida, sobre-ingeniería, "nice to haves"
     - **Mal entendido:** la funcionalidad correcta construida mal, o el
       problema equivocado resuelto
 
     Si el brief lista varios archivos cada uno con su cambio (un despacho en
-    lote), chequeá el diff contra esa lista archivo por archivo: cada archivo
+    lote), chequea el diff contra esa lista archivo por archivo: cada archivo
     listado debe tener su hunk. Un archivo listado que el diff nunca toca es
     un hallazgo Faltante, por limpio que esté el resto del lote.
 
     Si un requisito no se puede verificar solo desde este diff (vive en
-    código sin cambiar o cruza tareas), reportalo como ítem ⚠️ en vez de
+    código sin cambiar o cruza tareas), repórtalo como ítem ⚠️ en vez de
     ampliar tu búsqueda.
 
     ## Parte 2: calidad de código
@@ -119,19 +119,19 @@ Agent (subagent_type: general-purpose)
     definida? ¿las unidades se entienden y testean por separado? ¿se sigue la
     estructura de archivos del plan? ¿este cambio creó archivos que ya nacen
     grandes, o hizo crecer mucho los existentes? (No marques tamaños
-    preexistentes: enfocate en lo que este cambio aportó.)
+    preexistentes: enfócate en lo que este cambio aportó.)
 
     Tu reporte apunta a evidencia: referencia `archivo:línea` para cada
     hallazgo y para cualquier chequeo que si no contestarías con un "sí"
     pelado.
 
-    Tu mensaje final es el reporte: empezá directo con el veredicto de spec.
+    Tu mensaje final es el reporte: empieza directo con el veredicto de spec.
     Cada línea es un veredicto, un hallazgo con `archivo:línea`, o un chequeo
     que corriste. Sin preámbulo, sin narrar el proceso, sin resumen final.
 
     ## Calibración
 
-    Categorizá por severidad real. No todo es Crítico. **Importante** significa
+    Categoriza por severidad real. No todo es Crítico. **Importante** significa
     que no se puede confiar en esta tarea hasta arreglarlo: comportamiento
     incorrecto o frágil, un requisito faltante, o daño de mantenibilidad que
     bloquearías en un merge — duplicación literal de un bloque de lógica,
@@ -140,10 +140,10 @@ Agent (subagent_type: general-purpose)
 
     Si el plan o el brief manda explícitamente algo que esta rúbrica llama
     defecto (un test que no afirma nada, duplicación literal), ESO es un
-    hallazgo: reportalo como Importante, etiquetado **mandado-por-el-plan**.
+    hallazgo: repórtalo como Importante, etiquetado **mandado-por-el-plan**.
     La autoría del plan no califica su propio trabajo; decide el humano.
 
-    Reconocé lo que está bien hecho antes de listar problemas: el elogio
+    Reconoce lo que está bien hecho antes de listar problemas: el elogio
     preciso ayuda a que el implementador confíe en el resto del feedback.
 
     ## Formato de salida
